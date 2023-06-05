@@ -1,6 +1,5 @@
 # Image Annotator
 
-Image Caption Annotation with Python
 
 ## Introduction
 
