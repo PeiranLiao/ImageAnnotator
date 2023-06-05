@@ -25,7 +25,7 @@ python ImageAnnotator.py
 
 2. The software's interface will open, the screenshot is shown below. Click on "Browse Path" and navigate to the images you wish to annotate.
 
-   ![ScreenShot](.\ScreenShot\ScreenShot.png)
+   ![ScreenShot](https://github.com/PeiranLiao/ImageAnnotator/blob/main/ScreenShot/ScreenShot.png)
 
 3. Once the image is selected, the image will be displayed. Next to the image, you will find 5 input fields to enter the captions. Write your captions in these fields.
 
