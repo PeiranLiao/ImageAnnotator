@@ -1,6 +1,6 @@
-**<center><font size=7>Image Annotator</font></center>**
+### Image Annotator
 
-**<center>Image Caption Annotation with Python</center>**
+Image Caption Annotation with Python
 
 ## Introduction
 
