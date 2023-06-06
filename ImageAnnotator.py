@@ -91,6 +91,7 @@ class MainWindow:
 
     def previousimage(self):
         try:
+            self.savecaptions()
             if(self.imagelist.index(os.path.basename(self.imagepath)) == 0):
                 QMessageBox.about(self.ui,
                     'Error',
@@ -127,6 +128,7 @@ class MainWindow:
 
     def nextimage(self):
         try:
+            self.savecaptions()
             self.imagepath = os.path.join(self.folderpath, self.imagelist[self.imagelist.index(os.path.basename(self.imagepath)) + 1])
             # img = cv2.imread(self.imagepath)
             # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
