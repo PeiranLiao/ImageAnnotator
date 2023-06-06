@@ -29,7 +29,7 @@ python ImageAnnotator.py
 
 3. Once the image is selected, the image will be displayed. Next to the image, you will find 5 input fields to enter the captions. Write your captions in these fields.
 
-4. After finishing the annotation for the first image, click the "Save Captions" button to save the captions in a JSON file format, and you can click the "Next Image" or "Previous Image" button to move to the next or previous image in the folder. 
+4. After finishing the annotation for the first image, click the "Save Captions" button to save the captions in a JSON file format, and you can click the "Next Image" or "Previous Image" button to move to the next or previous image in the folder.(Clicking "Next/Previous Image" button will also save the captions!)
 
 5. The JSON file will be saved at  `./Annotation/` . The JSON file will have the following structure:
 
