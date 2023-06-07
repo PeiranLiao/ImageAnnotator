@@ -9,11 +9,6 @@ import json
 class MainWindow:
 
     def __init__(self):
-        # 从文件中加载UI定义
-
-        # 从 UI 定义中动态 创建一个相应的窗口对象
-        # 注意：里面的控件对象也成为窗口对象的属性了
-        # 比如 self.ui.button , self.ui.textEdit
         self.ui = uic.loadUi('ImageAnnotator.ui')
 
         self.ui.btnBrowseImagePath.clicked.connect(self.browsepath)
@@ -46,48 +41,8 @@ class MainWindow:
             os.mkdir(os.path.join(self.folderpath, 'Annotations'))
         self.imagelist = os.listdir(self.folderpath)
         self.ui.lineEditImagePath.setText(self.imagepath)
-        # img = cv2.imread(self.imagepath)
-        # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = plt.imread(self.imagepath)
-        x = img.shape[1]
-        y = img.shape[0]
-        self.zoomscale = 1
-        frame = QImage(img, x, y, QImage.Format_RGB888)
-        pix = QPixmap.fromImage(frame)
-        self.item = QGraphicsPixmapItem(pix)  # 创建像素图元
-        self.scene = QGraphicsScene()  # 创建场景
-        self.scene.addItem(self.item)
-        self.ui.graphicsView.setScene(self.scene)
-        self.ui.graphicsView.show()
+        self.show_image()
         self.show_saved_caption()
-        # try:
-        #     self.imagepath, _ = QFileDialog.getOpenFileName(
-        #         self.ui,
-        #         "Please select the image to annotate",
-        #         ".",
-        #         "jpg(*.jpg)")
-        #     self.folderpath = os.path.abspath(os.path.dirname(self.imagepath))
-        #     self.imagelist = os.listdir(self.folderpath)
-        #     self.ui.lineEditImagePath.setText(self.imagepath)
-        #     # img = cv2.imread(self.imagepath)
-        #     # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        #     img = plt.imread(self.imagepath)
-        #     x = img.shape[1]
-        #     y = img.shape[0]
-        #     self.zoomscale = 1
-        #     frame = QImage(img, x, y, QImage.Format_RGB888)
-        #     pix = QPixmap.fromImage(frame)
-        #     self.item = QGraphicsPixmapItem(pix)  # 创建像素图元
-        #     self.scene = QGraphicsScene()  # 创建场景
-        #     self.scene.addItem(self.item)
-        #     self.ui.graphicsView.setScene(self.scene)
-        #     self.ui.graphicsView.show()
-        #     self.show_saved_caption()
-        # except Exception:
-        #     QMessageBox.about(self.ui,
-        #             'Error',
-        #             f'''Image reading failed, check whether the image path is correct.'''
-        #             )
 
     def previousimage(self):
         try:
@@ -99,25 +54,8 @@ class MainWindow:
                     )
             else:    
                 self.imagepath = os.path.join(self.folderpath, self.imagelist[self.imagelist.index(os.path.basename(self.imagepath)) - 1])
-                # img = cv2.imread(self.imagepath)
-                # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-                img = plt.imread(self.imagepath)
-                x = img.shape[1]
-                y = img.shape[0]
-                self.zoomscale = 1
-                frame = QImage(img, x, y, QImage.Format_RGB888)
-                pix = QPixmap.fromImage(frame)
-                self.item = QGraphicsPixmapItem(pix)  # 创建像素图元
-                self.scene = QGraphicsScene()  # 创建场景
-                self.scene.addItem(self.item)
-                self.ui.graphicsView.setScene(self.scene)
-                self.ui.graphicsView.show()
+                self.show_image()
                 self.ui.lineEditImagePath.setText(self.imagepath)
-                # self.ui.lineEditCaption1.clear()
-                # self.ui.lineEditCaption2.clear()
-                # self.ui.lineEditCaption3.clear()
-                # self.ui.lineEditCaption4.clear()
-                # self.ui.lineEditCaption5.clear()
                 self.show_saved_caption()
         except Exception:
             QMessageBox.about(self.ui,
@@ -125,30 +63,12 @@ class MainWindow:
                     f'''This is the first image.'''
                     )
 
-
     def nextimage(self):
         try:
             self.savecaptions()
             self.imagepath = os.path.join(self.folderpath, self.imagelist[self.imagelist.index(os.path.basename(self.imagepath)) + 1])
-            # img = cv2.imread(self.imagepath)
-            # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            img = plt.imread(self.imagepath)
-            x = img.shape[1]
-            y = img.shape[0]
-            self.zoomscale = 1
-            frame = QImage(img, x, y, QImage.Format_RGB888)
-            pix = QPixmap.fromImage(frame)
-            self.item = QGraphicsPixmapItem(pix)  # 创建像素图元
-            self.scene = QGraphicsScene()  # 创建场景
-            self.scene.addItem(self.item)
-            self.ui.graphicsView.setScene(self.scene)
-            self.ui.graphicsView.show()
+            self.show_image()
             self.ui.lineEditImagePath.setText(self.imagepath)
-            # self.ui.lineEditCaption1.clear()
-            # self.ui.lineEditCaption2.clear()
-            # self.ui.lineEditCaption3.clear()
-            # self.ui.lineEditCaption4.clear()
-            # self.ui.lineEditCaption5.clear()
             self.show_saved_caption()
         except Exception:
             QMessageBox.about(self.ui,
@@ -163,11 +83,6 @@ class MainWindow:
         caption_4 = self.ui.lineEditCaption4.text()
         caption_5 = self.ui.lineEditCaption5.text()
 
-        # QMessageBox.about(self.ui,
-        #             'Test',
-        #             f'''{self.captions_show}'''
-        #             )
-        # self.data[self.caption_index]["image_name"]
         data_current = [{"caption_id": 0, "caption": caption_1},
                 {"caption_id": 1, "caption": caption_2},
                 {"caption_id": 2, "caption": caption_3},
@@ -180,6 +95,20 @@ class MainWindow:
         with open(self.json_path, 'w') as f:
             json.dump(self.data, f)
             
+    def show_image(self):
+        img = cv2.imread(self.imagepath)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        x = img.shape[1]
+        y = img.shape[0]
+        self.zoomscale = 1
+        frame = QImage(img, x, y, x*3, QImage.Format_RGB888)
+        pix = QPixmap.fromImage(frame)
+        self.item = QGraphicsPixmapItem(pix)  # 创建像素图元
+        self.scene = QGraphicsScene()  # 创建场景
+        self.scene.addItem(self.item)
+        self.ui.graphicsView.setScene(self.scene)
+        self.ui.graphicsView.show()
+    
     def show_saved_caption(self):
         self.captions_show = []
         for i,d in enumerate(self.data):
@@ -200,18 +129,6 @@ class MainWindow:
             self.ui.lineEditCaption3.setText(self.captions_show[2]["caption"])
             self.ui.lineEditCaption4.setText(self.captions_show[3]["caption"])
             self.ui.lineEditCaption5.setText(self.captions_show[4]["caption"])
-
-
-    
-    def test(self):
-        info = self.ui.lineEditCaption1.text()
-
-
-
-        QMessageBox.about(self.ui,
-                    'test',
-                    f'''{info}'''
-                    )
 
 
 if __name__ == '__main__':
