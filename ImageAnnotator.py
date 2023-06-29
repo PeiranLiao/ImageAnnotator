@@ -45,27 +45,21 @@ class MainWindow:
         self.show_saved_caption()
 
     def previousimage(self):
-        try:
-            self.savecaptions()
-            if(self.imagelist.index(os.path.basename(self.imagepath)) == 0):
-                QMessageBox.about(self.ui,
-                    'Error',
-                    f'''This is the first image.'''
-                    )
-            else:    
-                self.imagepath = os.path.join(self.folderpath, self.imagelist[self.imagelist.index(os.path.basename(self.imagepath)) - 1])
-                self.show_image()
-                self.ui.lineEditImagePath.setText(self.imagepath)
-                self.show_saved_caption()
-        except Exception:
+        self.savecaptions()
+        if(self.imagelist.index(os.path.basename(self.imagepath)) == 1):
             QMessageBox.about(self.ui,
-                    'Error',
-                    f'''This is the first image.'''
-                    )
+                'Error',
+                f'''This is the first image.'''
+                )
+        else:    
+            self.imagepath = os.path.join(self.folderpath, self.imagelist[self.imagelist.index(os.path.basename(self.imagepath)) - 1])
+            self.show_image()
+            self.ui.lineEditImagePath.setText(self.imagepath)
+            self.show_saved_caption()
 
     def nextimage(self):
+        self.savecaptions()
         try:
-            self.savecaptions()
             self.imagepath = os.path.join(self.folderpath, self.imagelist[self.imagelist.index(os.path.basename(self.imagepath)) + 1])
             self.show_image()
             self.ui.lineEditImagePath.setText(self.imagepath)
